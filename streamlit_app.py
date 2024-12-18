@@ -1,6 +1,12 @@
 import yfinance as yf
 import streamlit as st
 
+# Streamlit App Layout
+st.title("🎈 My new app")
+st.write(
+    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
+)
+
 # Function for deep debt analysis
 def deep_debt_analysis(stock_ticker):
     stock = yf.Ticker(stock_ticker)
