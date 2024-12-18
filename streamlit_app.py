@@ -1,11 +1,20 @@
 import yfinance as yf
 import streamlit as st
 
-# Streamlit App Layout
-st.title("🎈 My new app")
-st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
-)
+# Page Configuration
+st.set_page_config(page_title="📈 Deep Debt Analysis", page_icon="📊")
+
+# App Title and Description
+st.title("📈 Deep Debt Analysis with Buy Opportunity Teller")
+st.markdown("""
+Welcome to the **Deep Debt Analysis App**!  
+Analyze the debt metrics of any publicly listed company and determine if it's a **buy opportunity**.
+
+### This app provides:
+- **Key debt metrics** like Debt-to-Equity Ratio, Interest Coverage Ratio, and more.
+- **Insights into debt trends.**
+- **Buy opportunities** based on a company's debt reduction potential.
+""")
 
 # Function for deep debt analysis
 def deep_debt_analysis(stock_ticker):
@@ -22,7 +31,7 @@ def deep_debt_analysis(stock_ticker):
         "Total Debt Trend": [],
         "Debt Growth Status": None,
         "Zero Debt Potential": None,
-        "Buy Opportunity": None,  # Adding the buy opportunity metric
+        "Buy Opportunity": None,
     }
 
     # Debt-to-Equity Ratio
@@ -72,17 +81,13 @@ def deep_debt_analysis(stock_ticker):
 
     # Buy Opportunity Teller
     if debt_analysis["Zero Debt Potential"] == "Company is nearing zero debt":
-        debt_analysis["Buy Opportunity"] = "Big Buy Opportunity! Company is reducing debt aggressively."
+        debt_analysis["Buy Opportunity"] = "🚀 Big Buy Opportunity! Company is reducing debt aggressively."
     elif debt_analysis["Debt Growth Status"] == "Debt is decreasing":
-        debt_analysis["Buy Opportunity"] = "Potential Buy! Debt is decreasing consistently."
+        debt_analysis["Buy Opportunity"] = "👍 Potential Buy! Debt is decreasing consistently."
     else:
-        debt_analysis["Buy Opportunity"] = "Not a Buy Signal. Monitor for debt trends."
+        debt_analysis["Buy Opportunity"] = "⚠️ Not a Buy Signal. Monitor for debt trends."
 
     return debt_analysis
-
-# Streamlit App Layout
-st.title("Deep Debt Analysis with Buy Opportunity Teller")
-st.write("Analyze the debt metrics of any publicly listed company and determine if it's a buy opportunity.")
 
 # Input for Stock Ticker
 stock_ticker = st.text_input("Enter Stock Ticker (e.g., ZOMATO.NS):", value="ZOMATO.NS")
@@ -90,9 +95,16 @@ stock_ticker = st.text_input("Enter Stock Ticker (e.g., ZOMATO.NS):", value="ZOM
 # Perform Analysis
 if st.button("Analyze"):
     try:
-        analysis_result = deep_debt_analysis(stock_ticker)
+        with st.spinner("Analyzing data..."):
+            analysis_result = deep_debt_analysis(stock_ticker)
         st.subheader(f"Debt Analysis for {stock_ticker}")
         for metric, value in analysis_result.items():
             st.write(f"**{metric}:** {value}")
     except Exception as e:
         st.error(f"An error occurred: {e}")
+
+# Footer
+st.markdown("""
+---
+Created with ❤️ by [Ayush Dhika]. For feedback, visit our [GitHub](https://github.com).
+""")
